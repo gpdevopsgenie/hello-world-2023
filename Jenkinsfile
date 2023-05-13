@@ -14,6 +14,13 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/gpdevopsgenie/hello-world-2023.git'
             }
         }
+         stage (Sonarqube scan) {
+            steps{
+                withSonarQubeEnv('sonar') {
+                    mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:solar -Dsonar.sonar.projectKey=gpdevopsgenie_geolocation
+                }
+            }
+        }
         stage('Code Build') {
             steps {
                 sh 'mvn clean install package'
